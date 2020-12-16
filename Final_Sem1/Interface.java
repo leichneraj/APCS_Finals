@@ -20,7 +20,7 @@ public class Interface {
                 System.out.println("\n==--- Games ---==\n");
                 int count = 1;
                 for(String game : games) {
-                    System.out.println(count + ". " + game);
+                    System.out.println(count + ". " + game.replaceAll("_", " "));
                     count++;
                 }
                 System.out.println("\n==--- Games ---===");
@@ -56,10 +56,17 @@ public class Interface {
     }
 
     public static void view(int n, String[] games) {
+        Scanner scanner = new Scanner(System.in);
         String gameName = games[n-1];
         Game game = new Game(gameName);
         game.viewGame();
         System.out.println("\nWould you like to edit the game (1), go back (2), or quit (3)?");
+        if(scanner.nextInt() == 1) {
+            editGame();
+        } else if(scanner.nextInt() == 2) {
+            seeGames();
+        }
+        scanner.close();
     }
 
     public static void newGame() {
@@ -77,15 +84,23 @@ public class Interface {
             }
 
             System.out.print("What would you like the title the game? ");
-            String name = scanner.nextLine();
-            System.out.println(name);
+            String name = scanner.nextLine().replaceAll(" ", "_");
 
-            print.print(name + ",");
+            int i = 0;
+            while(i < dataBackup.length) {
+                if(dataBackup[i] != name) {
+                    print.print(name + ",");
+                    Game game = new Game(name);
+                    game.createGame();
+                } else {
+                    System.out.println("A game with that name already exists.");
+                    seeGames();
+                }
+                i++;
+            }
+
             print.close();
             scan.close();
-
-            Game game = new Game(name);
-            game.createGame();
         } catch(Exception e) {
             System.out.println(e);
         }
@@ -93,7 +108,9 @@ public class Interface {
     }
 
     public static void editGame() {
-
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("What character would you like to reroll? ");
+        
     }
 
 }
