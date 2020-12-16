@@ -57,14 +57,15 @@ public class Interface {
 
     public static void view(int n, String[] games) {
         Scanner scanner = new Scanner(System.in);
-        String gameName = games[n-1];
+        String gameName = games[n-1].replaceAll(" ", "_");
         Game game = new Game(gameName);
         game.viewGame();
         System.out.println("\nWould you like to edit the game (1), go back (2), or quit (3)?");
         if(scanner.nextInt() == 1) {
-            editGame();
+            editGame(gameName);
         } else if(scanner.nextInt() == 2) {
             seeGames();
+        } else if(scanner.nextInt() == 3) {
         }
         scanner.close();
     }
@@ -91,7 +92,7 @@ public class Interface {
                 if(dataBackup[i] != name) {
                     print.print(name + ",");
                     Game game = new Game(name);
-                    game.createGame();
+                    game.createGame(name);
                 } else {
                     System.out.println("A game with that name already exists.");
                     seeGames();
@@ -107,10 +108,31 @@ public class Interface {
         scanner.close();
     }
 
-    public static void editGame() {
+    public static void editGame(String gameName) {
+        File gameFile = new File(gameName + ".csv");
+        Scanner scan;
+        Character character = new Character();
         Scanner scanner = new Scanner(System.in);
         System.out.print("What character would you like to reroll? ");
-        
+        String name = scanner.next();
+        try {
+            scan = new Scanner(gameFile);
+            int count = 0;
+            String[] data;
+            while(scan.hasNextLine()) {
+                data = scan.nextLine().split(",");
+                if(name.contains(data[0])) {
+                    character.roll(count, data[1], gameFile);
+                } else {
+                    scan.nextLine();
+                    count++;
+                }
+            }
+            scan.close();
+        } catch(Exception e) {
+            System.out.println(e);
+        }
+        scanner.close();
     }
 
 }

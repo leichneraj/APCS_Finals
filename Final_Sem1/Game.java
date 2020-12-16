@@ -1,6 +1,5 @@
 import java.util.Scanner;
 import java.io.*;
-import java.util.Random;
 
 public class Game {
 
@@ -56,63 +55,13 @@ public class Game {
         return correct; // Returns whether or not the file is in the correct format.
     }
 
-    public void createGame() {
+    public void createGame(String storageFile) {
+        Character character = new Character();
         Scanner scanner = new Scanner(System.in);
-        Random random = new Random();
-        
-        int knight = 0, peasant = 0, cleric = 0, mage = 0, courtier = 0;
-        int characters = 0;
-        String[] characterInfo = new String[7];
-        while(characters != 5) {
-            System.out.print("What would you like the character to be named? ");
-            characterInfo[0] = scanner.next();
-            System.out.print("What type of character would you like ('Knight','Peasant','Cleric','Mage','Courtier')? ");
-            if(scanner.next().contains("Knight")) {
-                knight++;
-                if(knight <= 2) {
-                    characterInfo[1] = "Knight";
-                } else {
-                    System.out.println("Only two of each type of character allowed.");
-                    createGame();
-                }
-            } else if(scanner.next().contains("Peasant")) {
-                peasant++;
-                if(peasant <= 2) {
-                    characterInfo[1] = "Peasant";
-                } else {
-                    System.out.println("Only two of each type of character allowed.");
-                    createGame();
-                }
-            } else if(scanner.next().contains("Cleric")) {
-                cleric++;
-                if(cleric <= 2) {
-                    characterInfo[1] = "Peasant";
-                } else {
-                    System.out.println("Only two of each type of character allowed.");
-                    createGame();
-                }
-            } else if(scanner.next().contains("Mage")) {
-                mage++;
-                if(mage <= 2) {
-                    characterInfo[1] = "Mage";
-                } else {
-                    System.out.println("Only two of each type of character allowed.");
-                    createGame();
-                }
-            } else if(scanner.next().contains("Courtier")) {
-                courtier++;
-                if(courtier <= 2) {
-                    characterInfo[1] = "Courtier";
-                } else {
-                    System.out.println("Only two of each type of character allowed.");
-                    createGame();
-                }
-            } else {
-                System.out.println("Please use correct name of type.");
-                createGame();
-            }
-            characters++;
-        }
+
+        character.newCharacters(0, storageFile);
+
+        checkGameData();
         
         scanner.close();
     }
@@ -140,6 +89,8 @@ public class Game {
                     count++;
                 }
                 System.out.println("    ==---" + name.replaceAll(",", "") + "---==");
+            } else {
+                System.out.println("Game data not in correct format.");
             }
         } catch(Exception e) {
             System.out.println(e);
